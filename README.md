@@ -1,3 +1,5 @@
+![](https://badge.imagelayers.io/0xff/openvpn.svg)
+
 # OpenVPN for Docker
 
 Setup a secure OpenVPN server without effort using Docker.
@@ -11,35 +13,35 @@ Setup a secure OpenVPN server without effort using Docker.
 
 2. Initialize the `$OVPN_DATA` container that will hold the configuration files and certificates
 
-        docker run --volumes-from $OVPN_DATA --rm martin/openvpn ovpn_genconfig -u udp://VPN.SERVERNAME.COM
-        docker run --volumes-from $OVPN_DATA --rm -it martin/openvpn ovpn_initpki
+        docker run --volumes-from $OVPN_DATA --rm 0xff/openvpn ovpn_genconfig -u udp://VPN.SERVERNAME.COM
+        docker run --volumes-from $OVPN_DATA --rm -it 0xff/openvpn ovpn_initpki
 
 3. Start OpenVPN server process
 
-        docker run --name openvpn --volumes-from $OVPN_DATA -v /etc/localtime:/etc/localtime:ro -d -p 1194:1194/udp --cap-add=NET_ADMIN martin/openvpn
+        docker run --name openvpn --volumes-from $OVPN_DATA -v /etc/localtime:/etc/localtime:ro -d -p 1194:1194/udp --cap-add=NET_ADMIN 0xff/openvpn
 
 4. Generate a client certificate
 
-        docker run --volumes-from $OVPN_DATA --rm -it martin/openvpn easyrsa build-client-full CLIENTNAME
+        docker run --volumes-from $OVPN_DATA --rm -it 0xff/openvpn easyrsa build-client-full CLIENTNAME
 
-    - Or without a passphrase (only do this for testing purposes)
+* Or without a passphrase (only do this for testing purposes)
 
-            docker run --volumes-from $OVPN_DATA --rm -it martin/openvpn easyrsa build-client-full CLIENTNAME nopass
+        docker run --volumes-from $OVPN_DATA --rm -it 0xff/openvpn easyrsa build-client-full CLIENTNAME nopass
 
 5. Retrieve the client configuration with embedded certificates
 
-        docker run --volumes-from $OVPN_DATA --rm martin/openvpn ovpn_getclient CLIENTNAME > CLIENTNAME.ovpn
+        docker run --volumes-from $OVPN_DATA --rm 0xff/openvpn ovpn_getclient CLIENTNAME > CLIENTNAME.ovpn
 
-    - Or retrieve the client configuration with mssfix set to a lower value (yay Ziggo WifiSpots)
+* Or retrieve the client configuration with mssfix set to a lower value (yay Ziggo WifiSpots)
 
-            docker run --volumes-from $OVPN_DATA --rm martin/openvpn ovpn_getclient -M 1312 CLIENTNAME > CLIENTNAME.ovpn
+        docker run --volumes-from $OVPN_DATA --rm 0xff/openvpn ovpn_getclient -M 1312 CLIENTNAME > CLIENTNAME.ovpn
 		
 * If you need to remove access for a client then you can revoke the client certificate by running
 
-        docker run --volumes-from $OVPN_DATA --rm -it martin/openvpn ovpn_revokeclient CLIENTNAME
+        docker run --volumes-from $OVPN_DATA --rm -it 0xff/openvpn ovpn_revokeclient CLIENTNAME
 
 * To enable (bash) debug output set an environment variable with the name DEBUG and value of 1 (using "docker -e")
-        for example `docker run -e DEBUG=1 --name openvpn --volumes-from $OVPN_DATA -v /etc/localtime:/etc/localtime:ro -d -p 1194:1194/udp --cap-add=NET_ADMIN martin/openvpn`
+        for example `docker run -e DEBUG=1 --name openvpn --volumes-from $OVPN_DATA -v /etc/localtime:/etc/localtime:ro -d -p 1194:1194/udp --cap-add=NET_ADMIN 0xff/openvpn`
 
 * To view the log output run `docker logs openvpn`, to view it realtime run `docker logs -f openvpn`
 
@@ -76,4 +78,4 @@ Setup a secure OpenVPN server without effort using Docker.
   * Windows 8.1 64 bit using openvpn-2.3.6
 
 
-Based on [kylemanna/docker-openvpn](https://github.com/kylemanna/docker-openvpn).
+Based on [chadoe/docker-openvpn](https://github.com/chadoe/docker-openvpn).
