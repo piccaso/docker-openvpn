@@ -18,7 +18,7 @@ if [ ! -c /dev/net/tun ]; then
 fi
 
 if [ ! -d "$OPENVPN/ccd" ]; then
-    mkdir -p $OPENVPN/ccd
+    mkdir -p "$OPENVPN/ccd"
 fi
 
 # Setup NAT forwarding if requested
